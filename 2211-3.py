@@ -26,7 +26,7 @@ class Solution:
         history = None
 
         # more optimized implementation
-        i = 0
+        # i = 0
         
         for c in directions:
             # handle empty history first
