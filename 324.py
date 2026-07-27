@@ -13,13 +13,13 @@ from typing import List
 
 class Solution:
     def wiggleSort(self, nums: List[int]) -> None:
-        nums2 = sorted(nums)
-        midIdx = (len(nums)-1) // 2
+        nums2 = sorted(nums)         # Let's get a working version for now
+        midIdx = (len(nums)-1) // 2  # left middle of nums length is even
         if DEBUG:
             print(f"nums2={nums2} n={len(nums)} midIdx={midIdx}")
 
         def reverse_nums(array, lo, hi):
-            while lo > hi:
+            while lo < hi:
                 x = array[lo]
                 array[lo] = array[hi]
                 array[hi] = x
@@ -39,13 +39,13 @@ class Solution:
         #interleave [0, midIdx] and [midIdx+1, n-1]
         for i in range(midIdx+1):
             if DEBUG:
-                print(f"nums2[{i*2}]=nums[{i}]")
+                print(f"nums[{i*2}]=nums2[{i}]={nums2[i]}")
             nums[i*2] = nums2[i] 
-        for i in range(midIdx+1):
-            nums[1 + (i-midIdx-1)*2] = nums2[i]
 
-        # nums[:] = nums2[:]
-        
+        for i in range(midIdx+1, len(nums)):
+            if DEBUG:
+                print(f"nums[{1 + (i-midIdx-1)*2}]=nums2[{i}]={nums2[i]}")
+            nums[1 + (i-midIdx-1)*2] = nums2[i]        
 
 
 def is_wiggle(nums: List[int]) -> bool:
