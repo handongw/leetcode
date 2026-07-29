@@ -14,14 +14,7 @@ from typing import List
 
 class Solution:
     def maxAbsoluteSum(self, nums: List[int]) -> int:
-        # n = len(nums)
-        # if n <= 0:
-        #     return 0
-        # if n == 1:
-        #     return abs(nums[0])
-
         answer = 0
-        # dp = [nums[-1], nums[-1]] # [min sum of sub array, max sum of sub array]
         minSubArraySum = 0
         maxSubArraySum = 0
 
@@ -31,9 +24,6 @@ class Solution:
         for v in reversed(nums):
             m1 = minSubArraySum + v
             m2 = maxSubArraySum + v
-
-
-
             # answer = max(answer, abs(v), abs(m1), abs(m2))
             minSubArraySum = min(v, m1)
             maxSubArraySum = max(v, m2) 
