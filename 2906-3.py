@@ -15,35 +15,19 @@ class Solution:
 
         MODULE = 12345
 
-        # def setNextCell(matrix, r, c, v):
-        #     if c < n-1:
-        #         matrix[r][c+1] = v
-        #     else:
-        #         matrix[r+1][0] = v
-
-
+       # Forward: store product before current cell
         prod = 1
         for r in range(m):
             for c in range(n):
-                # prod *= grid[r][c]
+                result[r][c] = prod
                 prod = (prod * grid[r][c]) % MODULE
-                if r != m-1 or c != n-1:
-                    # setNextCell(result, r, c, prod)  # store endOf[x-1] in result[x]
-                    if c < n-1:
-                        result[r][c+1] = prod
-                    else:
-                        result[r+1][0] = prod    
 
-        # print(f"    endOf in result={result}")            
-
+        # Backward: multiply by product after current cell
         prod = 1
-        for r in reversed(range(m)):
-            for c in reversed(range(n)):
-                result[r][c] *= prod
-                result[r][c] %= MODULE
-
-                prod *= grid[r][c]
-                prod = prod % MODULE
+        for r in range(m - 1, -1, -1):
+            for c in range(n - 1, -1, -1):
+                result[r][c] = (result[r][c] * prod) % MODULE
+                prod = (prod * grid[r][c]) % MODULE
 
         return result
 
