@@ -1,92 +1,30 @@
+from collections import defaultdict
 from typing import List
 DEBUG = False
 
 class Solution:
     def subarraySum(self, nums: List[int], k: int) -> int:
         n = len(nums)
-        endOf = [0] * n # for debug
-        endOfGroup = {}
+        # if DEBUG:
+        #     endOf = [0] * n # for debug
+        endOfCount = defaultdict(lambda: 0)
         
-        sum = 0
-        for i in range(n):
-            sum += nums[i]
-            endOf[i] = sum
-
-            endOfGroup.setdefault(sum, [])
-            endOfGroup[sum].append(i)
-
-        groupKeys = list(endOfGroup.keys())
-        if k != 0:
-            groupKeys.sort()
-
-        if DEBUG:
-            print(f"nums={nums} k={k}")
-            print(f"    endOf={endOf}")
-            print(f"    endOfGroup={endOfGroup}")
-            print(f"    groupKeys={groupKeys}")
-
-
         result = 0
-        if k == 0: # handle k=0 differently
-            for grpKey in groupKeys:
-                ends = endOfGroup[grpKey]
-                if grpKey == 0:
-                    result += len(ends)
-                result += ( len(ends) * (len(ends)-1) // 2 )
-            return result        
+        prefix = 0
+        for i in range(n):
+            prefix += nums[i]
 
-        # check endOf directly
-        if k in  endOfGroup:
-            ends = endOfGroup[k] 
-            result += len(ends)
+            if prefix == k:  # the substr ends with nums[i] is one answer
+                result += 1
 
-        # compare endOf[x] and endOf[y]
-        if len(groupKeys) > 1:            
-            lo = 0
-            while lo +1 < len(groupKeys):
-                hi = -1
-                
-                # binary search
-                ptr1 = lo + 1
-                ptr2 = len(groupKeys)-1
-                while ptr1 <= ptr2:
-                    mid = (ptr1+ptr2) // 2
-                    diff = groupKeys[mid] - groupKeys[lo]
-                    if diff == abs(k):
-                        hi = mid
-                        break
-                    elif diff < abs(k):
-                        ptr1 = mid + 1
-                    else:
-                        ptr2 = mid - 1    
-
-                # while  hi<len(groupKeys) and groupKeys[hi] - groupKeys[lo] < abs(k):
-                #     hi += 1
-
-                if hi != -1:
-                    if k > 0:
-                        end_hi = endOfGroup[groupKeys[hi]]
-                        end_lo = endOfGroup[groupKeys[lo]]
-                    else:
-                        end_hi = endOfGroup[groupKeys[lo]]
-                        end_lo = endOfGroup[groupKeys[hi]]
-
-                    # merge sort end_lo, end_hi
-                    idx_lo = 0
-                    idx_hi = 0
-
-                    end_lo_picked = 0
-                    while idx_lo < len(end_lo) and idx_hi < len(end_hi):
-                        if end_lo[idx_lo] < end_hi[idx_hi]:
-                            idx_lo += 1
-                            end_lo_picked += 1
-                        else:
-                            idx_hi += 1   
-                            result += end_lo_picked
-                    if idx_hi < len(end_hi):
-                        result += end_lo_picked * (len(end_hi)-idx_hi)        
-                lo += 1
-
+            # look for x where 
+            #   1) x < i 
+            #   2) endOf[i] - endOf[x] == k, i.e. endOf[x] = endOf[i] - k
+            # endOfCount[*] = 0 by default
+            result += endOfCount[prefix-k]     
+            # if DEBUG:
+            #     endOf[i] = prefix
+            endOfCount[prefix] = endOfCount[prefix] + 1
 
         return result
 
