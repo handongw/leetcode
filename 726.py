@@ -43,7 +43,7 @@ class Solution:
 
             raise Exception(f"invalid char {c}")
 
-        def _next_token()->Tuple[int, Any]:
+        def next_token()->Tuple[int, Any]:
             nonlocal next_char_idx
 
             if next_char_idx >= n:
@@ -74,11 +74,11 @@ class Solution:
                 next_char_idx = j
                 return (LABEL, formula[i:j])
 
-        def next_token()->Tuple[int, any]:
-            token = _next_token()
-            if DEBUG:
-                print(f"    next_token => ({token_type_map[token[0]]},{token[1]}) next_char_idx={next_char_idx} remaining formular={formula[next_char_idx:]}")
-            return token
+        # def next_token()->Tuple[int, any]:
+        #     token = _next_token()
+        #     if DEBUG:
+        #         print(f"    next_token => ({token_type_map[token[0]]},{token[1]}) next_char_idx={next_char_idx} remaining formular={formula[next_char_idx:]}")
+        #     return token
 
         def add_atom(atom_dict:Dict[str, int], label:str, cnt:int):
             old_cnt = atom_dict.get(label, 0)
