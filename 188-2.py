@@ -1,5 +1,5 @@
 from typing import List
-DEBUG = True
+DEBUG = False
 
 # O(kn) solution
 class Solution:
@@ -17,7 +17,7 @@ class Solution:
             #   ........................
             #   dp[r-1][d-2] - prices[d-2]
 
-            max_diff = 0 
+            max_diff = float('-inf') 
             for d in range(2, n+1): # it is not possible to sell in < 2 days
                 # no sell at (d-1)th day
                 no_sell_profit = dp[r][d-1]
