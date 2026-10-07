@@ -15,11 +15,11 @@ class Solution:
             print(f"left-right scan: candies={candies}")        
 
         # scan right to left
-        for j in range(n-2, 0, -1):
+        for j in range(n-2, -1, -1):
             if ratings[j] > ratings[j+1]:
-                candies[j] = max(candies[j], candies[j+1]) 
+                candies[j] = max(candies[j], candies[j+1]+1) 
         if DEBUG:
-            print(f"left-right scan: candies={candies}")                  
+            print(f"right-left scan: candies={candies}")                  
 
         total_candies = 0
         for m in candies:
